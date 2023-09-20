@@ -12,6 +12,5 @@ frontend:
         - pnpm run build
   artifacts:
     baseDirectory: .next
-  cache:
-    paths:
-      - node_modules/**/*
+    files:
+      - "**/*"
