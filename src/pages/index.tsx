@@ -1,11 +1,55 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import styles from "@/styles/Home.module.css";
+import { useState } from "react";
+import { DidkitRes, VerifyStatus } from "@/types";
+import { verifyCredential } from "@spruceid/didkit-wasm";
+import { useStatEerrorText, useStateVerifyStatus } from "@/lib/jotai";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [vc, setVc] = useState("");
+  const [res, setRes] = useStateVerifyStatus();
+  const [error, setError] = useStatEerrorText();
+
+  const verify = async (vc: string) => {
+    try {
+      setRes(VerifyStatus.verifying);
+      const proofOptions = {};
+      const res = await verifyCredential(vc, JSON.stringify(proofOptions));
+
+      console.log({ res });
+
+      const resJson = JSON.parse(res) as DidkitRes;
+      // 検証失敗
+      if (resJson.errors && resJson.errors.length > 0) {
+        setError(resJson.errors.join(","));
+        setRes(VerifyStatus.failed);
+        return;
+      }
+      // 検証成功?
+      if (resJson.warnings && resJson.warnings.length > 0) {
+        setError(resJson.warnings.join(","));
+        setRes(VerifyStatus.success);
+        return;
+      }
+
+      //検証成功
+      setError("");
+      setRes(VerifyStatus.success);
+    } catch (error) {
+      console.error(error);
+      setError(JSON.stringify(error));
+      setRes(VerifyStatus.failed);
+    }
+  };
+
+  const handleValidation = async () => {
+    if (!vc) return;
+    await verify(vc);
+  };
   return (
     <>
       <Head>
@@ -15,100 +59,21 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
         <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
+          <textarea
+            className={`${styles.textarea}`}
+            value={vc}
+            onChange={(e) => setVc(e.target.value)}
+            placeholder="テキストを入力してください"
+          ></textarea>
+          <br />
+          <button onClick={handleValidation}>検証する</button>
+          <div className={styles.center}>
+            {res && res !== VerifyStatus.waiting && <p>{res}</p>}
+            {error && error !== "" && <p>{error}</p>}
+          </div>
         </div>
       </main>
     </>
-  )
+  );
 }
