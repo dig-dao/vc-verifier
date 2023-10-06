@@ -13,7 +13,8 @@ pnpm dev
 
 copy & paste below.
 
-```{
+```
+{
   "@context": "https://www.w3.org/2018/credentials/v1",
   "id": "urn:uuid:86a109aa-a3f6-4374-b46f-92c58fcb16a1",
   "type": [
@@ -38,7 +39,8 @@ copy & paste below.
 
 copy & paste below.
 
-```{
+```
+{
   "@context": "https://www.w3.org/2018/credentials/v1",
   "id": "urn:uuid:86a109aa-a3f6-4374-b46f-92c58fcb16a1",
   "type": [
