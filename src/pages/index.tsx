@@ -6,6 +6,10 @@ import { useState } from "react";
 import { DidkitRes, VerifyStatus } from "@/types";
 import { verifyCredential } from "@spruceid/didkit-wasm";
 import { useStatEerrorText, useStateVerifyStatus } from "@/lib/jotai";
+import { HCFLayout } from "@/components/HCFLayout";
+import { HeaderMenu } from "@/components/HeaderMenu";
+import { Footer } from "@/components/Footer";
+import { VerifierContainer } from "@/components/VerifierContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,22 +62,33 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.center}>
-          <textarea
-            className={`${styles.textarea}`}
-            value={vc}
-            onChange={(e) => setVc(e.target.value)}
-            placeholder="テキストを入力してください"
-          ></textarea>
-          <br />
-          <button onClick={handleValidation}>検証する</button>
-          <div className={styles.center}>
-            {res && res !== VerifyStatus.waiting && <p>{res}</p>}
-            {error && error !== "" && <p>{error}</p>}
+
+      <HCFLayout header={<HeaderMenu />} footer={<Footer />}>
+        <main className={`grid place-content-center h-full p-4 md:p-8`}>
+          <div className={`flex flex-col items-center gap-8 w-fit`}>
+            <VerifierContainer />
+            <div className={`flex flex-col items-center w-full gap-4`}>
+              <p className={`text-lg font-bold text-lime-700`}>対応規格</p>
+              <div
+                className={`flex items-center justify-center gap-6 flex-wrap`}
+              >
+                <Image
+                  src="/sakazuki_logo.png"
+                  alt="sakazuki logo"
+                  width={185}
+                  height={32}
+                />
+                <Image
+                  src="/vess_logo.png"
+                  alt="vess logo"
+                  width={123}
+                  height={32}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </HCFLayout>
     </>
   );
 }
