@@ -65,7 +65,10 @@ export const HeaderMenu: FC = () => {
             <div
               className={`flex flex-col items-start justify-start gap-4 py-8`}
             >
-              <Link href="/" target="_blank">
+              <Link
+                href="https://note.com/mariroom/n/nd123a8a18611"
+                target="_blank"
+              >
                 <Button
                   variant="ghost"
                   className={`flex gap-1 items-center text-lime-900 text-xl hover:bg-lime-100`}
