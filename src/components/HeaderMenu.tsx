@@ -32,7 +32,7 @@ export const HeaderMenu: FC = () => {
           <NavigationMenuItem>
             <NavigationMenuLink
               className={`${navigationMenuTriggerStyle()} flex gap-1 items-center bg-transparent text-lime-900 hover:bg-lime-100`}
-              href="https://github.com"
+              href="https://note.com/mariroom/n/nd123a8a18611"
               target="_blank"
             >
               <p>DigDAOについて</p>
