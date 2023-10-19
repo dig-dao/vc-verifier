@@ -71,7 +71,7 @@ export const VerifierContainer: FC = () => {
         className={` flex items-center justify-center  gap-2 text-xl md:text-3xl text-lime-900 border-lime-600 border-b-[1px] w-full pb-3 md:pb-6 px-3 font-semibold`}
       >
         <BsPatchCheckFill />
-        <p>Verifiable Credentials Verifier</p>
+        <p>Open Credential Verifier</p>
       </div>
       <div className={` text-lime-950 text-xs md:text-sm`}>
         VC (Verifiable Credentials)

@@ -3,11 +3,9 @@ import { FC } from "react";
 import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -15,8 +13,6 @@ import { HiOutlineExternalLink } from "react-icons/hi";
 import { BsGithub } from "react-icons/bs";
 import { Button } from "./ui/button";
 import { HiOutlineMenu } from "react-icons/hi";
-
-type HeaderMenuProps = {};
 
 export const HeaderMenu: FC = () => {
   return (
