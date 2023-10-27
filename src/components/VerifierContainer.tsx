@@ -97,12 +97,17 @@ export const VerifierContainer: FC = () => {
       {res &&
         res !== VerifyStatus.waiting &&
         (res === VerifyStatus.failed ? (
-          <div
-            className={`flex items-center gap-2 text-lg text-rose-900 font-semibold`}
-          >
-            <BiSolidErrorAlt />
-            <p>{res}</p>
-          </div>
+          <>
+            <div
+              className={`flex items-center gap-2 text-lg text-rose-900 font-semibold`}
+            >
+              <BiSolidErrorAlt />
+              <p>{res}</p>
+            </div>
+            <p className={`gap-2 text-md text-rose-900 font-semibold`}>
+              {error || ""}
+            </p>
+          </>
         ) : (
           <div
             className={`flex items-center gap-2 text-lg text-sky-900 font-semibold`}
