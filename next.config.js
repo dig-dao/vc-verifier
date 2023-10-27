@@ -7,7 +7,7 @@ const nextConfig = {
       layers: true,
     };
     config.output.webassemblyModuleFilename =
-      (isServer ? "../" : "") + "static/wasm/[modulehash].wasm";
+      (isServer ? "../" : "") + "static/wasm/webassembly.wasm";
     return config;
   },
 };
