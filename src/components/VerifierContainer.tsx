@@ -6,6 +6,7 @@ import { useStateVerifyStatus, useStatEerrorText } from "@/lib/jotai";
 import { VerifyStatus, DidkitRes } from "@/types";
 import { verifyCredential } from "@spruceid/didkit-wasm";
 import { BiSolidErrorAlt } from "react-icons/bi";
+import { getAgent } from "@/lib/veramo";
 
 export const VerifierContainer: FC = () => {
   const [vc, setVc] = useState("");
@@ -32,24 +33,34 @@ export const VerifierContainer: FC = () => {
       setRes(VerifyStatus.verifying);
       const proofOptions = {};
       const res = await verifyCredential(vc, JSON.stringify(proofOptions));
-
       console.log({ res });
-
       const resJson = JSON.parse(res) as DidkitRes;
-      // 検証失敗
+      // verification fails?
       if (resJson.errors && resJson.errors.length > 0) {
-        setError(resJson.errors.join(","));
+        // If verification fails with Didkit (which sometimes happens with EIP712), verify with Veramo as well.
+        const veramo = getAgent();
+        const veramoRes = await veramo.verifyCredential({
+          credential: JSON.parse(vc),
+        });
+        console.log({ veramoRes });
+        if (veramoRes.verified) {
+          //Verification Success
+          setError("");
+          setRes(VerifyStatus.success);
+          return;
+        }
+        setError(veramoRes.error?.message || resJson.errors.join(","));
         setRes(VerifyStatus.failed);
         return;
       }
-      // 検証成功?
+      // Verification Success?
       if (resJson.warnings && resJson.warnings.length > 0) {
         setError(resJson.warnings.join(","));
         setRes(VerifyStatus.success);
         return;
       }
 
-      //検証成功
+      //Verification Success
       setError("");
       setRes(VerifyStatus.success);
     } catch (error) {
