@@ -5,10 +5,10 @@ export type DidkitRes = {
 };
 
 export const VerifyStatus = {
-  success: "検証に成功しました。",
-  verifying: "検証中...",
-  failed: "検証に失敗しました。",
-  waiting: "待機中",
+  success: "Successfully verified.",
+  verifying: "Verifying...",
+  failed: "Verification failed.",
+  waiting: "Waiting for verification...",
 } as const;
 
 export type VerifyStatusType = (typeof VerifyStatus)[keyof typeof VerifyStatus];

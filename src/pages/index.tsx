@@ -20,7 +20,7 @@ export default function Home() {
           <div className={`flex flex-col items-center gap-8 w-fit`}>
             <VerifierContainer />
             <div className={`flex flex-col items-center w-full gap-4`}>
-              <p className={`text-lg font-bold text-lime-700`}>対応規格</p>
+              <p className={`text-lg font-bold text-lime-700`}>Supported by</p>
               <div
                 className={`flex items-center justify-center gap-6 flex-wrap`}
               >

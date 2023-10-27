@@ -31,7 +31,7 @@ export const HeaderMenu: FC = () => {
               href="https://note.com/mariroom/n/nd123a8a18611"
               target="_blank"
             >
-              <p>DigDAOについて</p>
+              <p>About DigDAO</p>
               <HiOutlineExternalLink />
             </NavigationMenuLink>
           </NavigationMenuItem>
@@ -69,7 +69,7 @@ export const HeaderMenu: FC = () => {
                   variant="ghost"
                   className={`flex gap-1 items-center text-lime-900 text-xl hover:bg-lime-100`}
                 >
-                  <p>DigDAOについて</p>
+                  <p>About DigDAO</p>
                   <HiOutlineExternalLink />
                 </Button>
               </Link>

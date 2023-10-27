@@ -85,8 +85,8 @@ export const VerifierContainer: FC = () => {
         <p>Open Credential Verifier</p>
       </div>
       <div className={` text-lime-950 text-xs md:text-sm`}>
-        VC (Verifiable Credentials)
-        を検証するツールです。VCのJSONデータをそのままコピー&ペーストしてください。
+        The tool to verify VC (Verifiable Credentials); just copy and paste your
+        VC data as JSON format.
       </div>
       <Textarea
         className={` h-60`}
@@ -124,7 +124,7 @@ export const VerifierContainer: FC = () => {
         }
         onClick={vc ? handleValidation : () => {}}
       >
-        検証する
+        Verify
       </Button>
     </div>
   );
