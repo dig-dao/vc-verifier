@@ -31,35 +31,31 @@ export const VerifierContainer: FC = () => {
   const verify = async (vc: string) => {
     try {
       setRes(VerifyStatus.verifying);
-      const proofOptions = {};
-      const res = await verifyCredential(vc, JSON.stringify(proofOptions));
-      console.log({ res });
-      const resJson = JSON.parse(res) as DidkitRes;
-      // verification fails?
-      if (resJson.errors && resJson.errors.length > 0) {
-        // If verification fails with Didkit (which sometimes happens with EIP712), verify with Veramo as well.
-        const veramo = getAgent();
-        const veramoRes = await veramo.verifyCredential({
-          credential: JSON.parse(vc),
-        });
-        console.log({ veramoRes });
-        if (veramoRes.verified) {
-          //Verification Success
-          setError("");
+      const veramo = getAgent();
+      const veramoRes = await veramo.verifyCredential({
+        credential: JSON.parse(vc),
+      });
+      console.log({ veramoRes });
+      if (veramoRes.verified) {
+        //Verification Success
+        setError("");
+        setRes(VerifyStatus.success);
+        return;
+      } else {
+        const proofOptions = {};
+        const didkitRes = await verifyCredential(
+          vc,
+          JSON.stringify(proofOptions)
+        );
+        console.log({ didkitRes });
+        const resJson = JSON.parse(didkitRes) as DidkitRes;
+        // Verification Success?
+        if (resJson.warnings && resJson.warnings.length > 0) {
+          setError(resJson.warnings.join(","));
           setRes(VerifyStatus.success);
           return;
         }
-        setError(veramoRes.error?.message || resJson.errors.join(","));
-        setRes(VerifyStatus.failed);
-        return;
       }
-      // Verification Success?
-      if (resJson.warnings && resJson.warnings.length > 0) {
-        setError(resJson.warnings.join(","));
-        setRes(VerifyStatus.success);
-        return;
-      }
-
       //Verification Success
       setError("");
       setRes(VerifyStatus.success);
