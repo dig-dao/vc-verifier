@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "./ui/button";
 import { useStateVerifyStatus, useStatEerrorText } from "@/lib/jotai";
 import { VerifyStatus, DidkitRes } from "@/types";
-import { verifyCredential } from "@spruceid/didkit-wasm";
+import { verifyCredential } from "@dig-dao/didkit-wasm";
 import { BiSolidErrorAlt } from "react-icons/bi";
 import { getAgent } from "@/lib/veramo";
 
