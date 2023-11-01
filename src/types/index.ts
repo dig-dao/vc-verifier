@@ -4,6 +4,10 @@ export type DidkitRes = {
   errors: string[];
 };
 
+export type DidkitProofOptions = {
+  checks?: string[];
+}
+
 export const VerifyStatus = {
   success: "Successfully verified.",
   verifying: "Verifying...",
