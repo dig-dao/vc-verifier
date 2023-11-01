@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@dig-dao/didkit-wasm':
+    specifier: 0.1.0
+    version: 0.1.0
   '@radix-ui/react-dialog':
     specifier: ^1.0.5
     version: 1.0.5(@types/react-dom@18.2.7)(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
@@ -14,9 +17,6 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.22)(react@18.2.0)
-  '@spruceid/didkit-wasm':
-    specifier: ^0.2.1
-    version: 0.2.1
   '@types/react-icons':
     specifier: ^3.0.0
     version: 3.0.0(react@18.2.0)
@@ -1934,6 +1934,10 @@ packages:
     engines: {node: '>=14.14'}
     dependencies:
       codeco: 1.2.0
+    dev: false
+
+  /@dig-dao/didkit-wasm@0.1.0:
+    resolution: {integrity: sha512-5Zxhys/ttaEd9FltfM0qVLv4VNLwnAXXGiwqbJ7mwn3i6p+IHyOkecaacjUTT9h2X9ake3Y+S94QA+HdnACL+A==, tarball: https://npm.pkg.github.com/download/@dig-dao/didkit-wasm/0.1.0/566c5d290e13f7635ff6956b6543e70c3751a4e6}
     dev: false
 
   /@digitalbazaar/bitstring@3.1.0:
@@ -4542,10 +4546,6 @@ packages:
       '@sinonjs/commons': 3.0.0
     dev: false
     optional: true
-
-  /@spruceid/didkit-wasm@0.2.1:
-    resolution: {integrity: sha512-Qi0ZVS2vNA6iVwOzfIdyVQSj1Q88DgV0HyjnQGZ84YsrjaxbCSPwyhZs3TBzUGKwvoyiGCvWohYnL0G3BsPEMQ==}
-    dev: false
 
   /@stablelib/aead@1.0.1:
     resolution: {integrity: sha512-q39ik6sxGHewqtO0nP4BuSe3db5G1fEJE8ukvngS2gLkBXyy6E7pLubhbYgnkDFv6V8cWaxcE4Xn0t6LWcJkyg==}
@@ -11052,7 +11052,7 @@ packages:
     dependencies:
       object-assign: 4.1.1
       react: 18.2.0
-      react-is: 16.13.1
+      react-is: 18.2.0
     dev: false
     optional: true
 
