@@ -30,43 +30,55 @@ export const VerifierContainer: FC = () => {
 
   const verify = async (vc: string) => {
     try {
-      setRes(VerifyStatus.verifying);
-      const jsonVc = JSON.parse(vc);
-      const proofOptions: DidkitProofOptions = {};
-      if (jsonVc.credentialStatus) {
-        proofOptions.checks = ["credentialStatus"]
-      }
-      const didkitRes = await verifyCredential(
-        vc,
-        JSON.stringify(proofOptions)
-      );
-      console.log({ didkitRes });
-
-      const resJson = JSON.parse(didkitRes) as DidkitRes;
-      if (resJson.errors && resJson.errors.length > 0) {
-          // Verification Failed, in case: {"checks":["proof","status"],"warnings":[],"errors":["Credential is revoked."]}
-        setError(resJson.errors.join(","));
-        setRes(VerifyStatus.failed);
-      } else if (resJson.checks && resJson.checks.length > 0) {
-        // Verification Success
-        setError("");
-        setRes(VerifyStatus.success);
-        return;
-      } else if (resJson.warnings && resJson.warnings.length > 0) {
-        // Verification Success?
-        setError(resJson.warnings.join(","));
-        setRes(VerifyStatus.success);
-        return;
-      }
-      // Verification Failed
-      setError("");
-      setRes(VerifyStatus.failed);
+      const { verifyStatus, errorMessage } = await verifyDidkit(vc);
+      setError(errorMessage);
+      setRes(verifyStatus);
     } catch (error) {
       console.error(error);
       setError(JSON.stringify(error));
       setRes(VerifyStatus.failed);
     }
   };
+
+  const verifyDidkit = async (vc: string) => {
+    const jsonVc = JSON.parse(vc);
+    const proofOptions: DidkitProofOptions = {};
+    if (jsonVc.credentialStatus) {
+      proofOptions.checks = ["credentialStatus"]
+    }
+    const didkitRes = await verifyCredential(
+      vc,
+      JSON.stringify(proofOptions)
+    );
+    console.log({ didkitRes });
+
+    const resJson = JSON.parse(didkitRes) as DidkitRes;
+    if (resJson.errors && resJson.errors.length > 0) {
+        // Verification Failed, in case: {"checks":["proof","status"],"warnings":[],"errors":["Credential is revoked."]}
+      return {
+        verifyStatus: VerifyStatus.failed,
+        errorMessage: resJson.errors.join(","),
+      }
+    } else if (resJson.checks && resJson.checks.length > 0) {
+      // Verification Success
+      return {
+        verifyStatus: VerifyStatus.success,
+        errorMessage: "",
+      }
+    } else if (resJson.warnings && resJson.warnings.length > 0) {
+      // Verification Success?
+      return {
+        verifyStatus: VerifyStatus.success,
+        errorMessage: resJson.warnings.join(","),
+      }
+    }
+
+    // Verification Failed
+    return {
+      verifyStatus: VerifyStatus.failed,
+      errorMessage: "",
+    }
+  }
 
   const handleValidation = async () => {
     if (!vc) return;
