@@ -30,9 +30,16 @@ export const VerifierContainer: FC = () => {
 
   const verify = async (vc: string) => {
     try {
-      const { verifyStatus, errorMessage } = await verifyDidkit(vc);
-      setError(errorMessage);
-      setRes(verifyStatus);
+      const jsonVc = JSON.parse(vc);
+      if (jsonVc.proof.type === "EthereumEip712Signature2021") {
+        const { verifyStatus, errorMessage } = await verifyWithVeramo(vc);
+        setError(errorMessage);
+        setRes(verifyStatus);
+      } else {
+        const { verifyStatus, errorMessage } = await verifyWithDidkit(vc);
+        setError(errorMessage);
+        setRes(verifyStatus);
+      }
     } catch (error) {
       console.error(error);
       setError(JSON.stringify(error));
@@ -40,7 +47,27 @@ export const VerifierContainer: FC = () => {
     }
   };
 
-  const verifyDidkit = async (vc: string) => {
+  const verifyWithVeramo = async (vc: string) => {
+    const veramo = getAgent();
+    const veramoRes = await veramo.verifyCredential({
+      credential: JSON.parse(vc),
+    });
+    console.log({ veramoRes });
+    if (veramoRes.verified) {
+      //Verification Success
+      return {
+        verifyStatus: VerifyStatus.success,
+        errorMessage: "",
+      }
+    } else {
+      return {
+        verifyStatus: VerifyStatus.failed,
+        errorMessage: veramoRes.error?.message || "",
+      }
+    }
+  }
+
+  const verifyWithDidkit = async (vc: string) => {
     const jsonVc = JSON.parse(vc);
     const proofOptions: DidkitProofOptions = {};
     if (jsonVc.credentialStatus) {
