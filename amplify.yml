@@ -6,6 +6,8 @@ frontend:
         - nvm use 18
         - node -v
         - npm install -g pnpm
+        - echo "NODE_AUTH_TOKEN=$NODE_AUTH_TOKEN" >> .env
+        - pnpm preinstall
         - pnpm install
     build:
       commands:
